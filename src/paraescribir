@@ -1,0 +1,37 @@
+ var select = document.createElement("select");
+for (let provincia of post.provincias) {
+  var option = document.createElement("option");
+  option.value = provincia["CODPROV"];
+  option.text = provincia["NOMBRE_PROVINCIA"];
+  select.appendChild(option);
+}
+document.body.appendChild(select);
+
+   //.then(text => text.json())
+   //.then(text => console.log(text))
+   //.catch(err => console.log(err))
+  /* const response = await fetch(urlProvincias);
+   const data = await response.json();
+   return data*/
+
+    api: //const provinciaInWeb = document.getElementById('dropdown-itm')
+   //const menu = document.getElementById('drop-menu')
+   //menu.appendChild(provinciaInWeb.innerText= provincia['NOMBRE_PROVINCIA'])
+   //console.log(provincia['NOMBRE_PROVINCIA'])
+   
+    async function obtenerLasProvincias(){
+   
+      
+       const urlProvincias = 'https://www.el-tiempo.net/api/json/v2/provincias'
+       
+      const response = await fetch(urlProvincias);
+      const post = await response.json();  
+      var json = JSON.stringify(post.provincias);
+      return json
+   
+   
+   
+     
+     
+       
+   }

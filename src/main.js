@@ -1,7 +1,32 @@
 "use strict"
 
-console.log("el fichero main")
 
-/*fetch('https://www.el-tiempo.net/api/json/v2/home')
-   .then(response => response.text())
-   .then(text => console.log(text))*/
+let mostrarLasProvincias= require('./api/ProvinciasApi')
+const urlProvincias = 'https://www.el-tiempo.net/api/json/v2/provincias'
+
+
+
+//cargar todo el DOM
+document.addEventListener("DOMContentLoaded", function() {
+
+  let menuDeProvincias =  document.getElementById('drop-menu')
+  mostrarLasProvincias(urlProvincias, menuDeProvincias)
+
+  //let elementoProvincia = docu
+
+  //let escocherLasProvincias = document.getElementById('drop-menu');
+  escocherLasProvincias.addEventListener('click', (e)=>{console.log('hecho click'), aElement = document.createElement('a'),
+
+    aElement.classList.add('dropdown-item'),escocherLasProvincias.appendChild(aElement)},
+     );
+    
+  });
+ 
+
+
+
+
+
+
+
+   
