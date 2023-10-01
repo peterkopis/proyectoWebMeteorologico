@@ -35,3 +35,12 @@ document.body.appendChild(select);
      
        
    }
+
+   //elementoProvincia.forEach(element => {element.addEventListener('click', (e)=>{console.log('hecho click')})
+    //for(let elemento of elementosProvincia ){
+      /*for(let numProvincia = 0;numProvincia < elementosProvincia.length; numProvincia++){
+
+        elementosProvincia[numProvincia].addEventListener('click', (e)=>{e.preventDefault,console.log('hecho click')})
+        console.log(elementosProvincia)
+    }*/
+    //console.log(elementosProvincia)

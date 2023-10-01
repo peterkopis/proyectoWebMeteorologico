@@ -3,7 +3,7 @@
 
 
 
-let elementoPorvincia
+let elementoProvincia
 
 
 
@@ -14,19 +14,21 @@ function obtenerJson(url) {
  
  module.exports = function mostrarProvincias(url,menuDeProvincias) {
    obtenerJson(url).then(json => {
-     
-     for(let provincia of json.provincias){
-          console.log(provincia.NOMBRE_PROVINCIA +'--------'),
-          elementoPorvincia =document.createElement('a')
-          elementoPorvincia.classList.add('dropdown-item')
-          elementoPorvincia.innerText = provincia.NOMBRE_PROVINCIA
-          elementoPorvincia.setAttribute("codigo", provincia.CODPROV);
-         // menuDeProvincias = document.getElementById('drop-menu')
-          menuDeProvincias.appendChild(elementoPorvincia)
+    
+     for(let provincia  of json.provincias){
+          //console.log(provincia.NOMBRE_PROVINCIA +'--------'),
+          elementoProvincia =document.createElement('a')
+          elementoProvincia.setAttribute('href','#')
+          elementoProvincia.classList.add('dropdown-item')
+          elementoProvincia.innerText = provincia.NOMBRE_PROVINCIA
+          elementoProvincia.setAttribute("codigo", provincia.CODPROV)
+          elementoProvincia.addEventListener('click',e=>console.log('clicki'))
+          menuDeProvincias.appendChild(elementoProvincia)
 
      }
      
-   });
+   })
+  // return  Promise.resolve(resolve=>{console.log('promise')})
  }
 },{}],2:[function(require,module,exports){
 "use strict"
@@ -34,23 +36,29 @@ function obtenerJson(url) {
 
 let mostrarLasProvincias= require('./api/ProvinciasApi')
 const urlProvincias = 'https://www.el-tiempo.net/api/json/v2/provincias'
+let elementosProvincia
 
 
 
-console.log("el fichero main")
-
+//cargar todo el DOM
 document.addEventListener("DOMContentLoaded", function() {
 
   let menuDeProvincias =  document.getElementById('drop-menu')
-    mostrarLasProvincias(urlProvincias, menuDeProvincias)
+mostrarLasProvincias(urlProvincias, menuDeProvincias)
+ 
 
-    //let escocherLasProvincias = document.getElementById('drop-menu');
-    escocherLasProvincias.addEventListener('click', (e)=>{console.log('hecho click'), aElement = document.createElement('a'),
+  elementosProvincia = document.querySelectorAll('.dropdown-item'),
+  //document.querySelectorAll(".dropdown-item"); //document.getElementsByTagName('a') document.querySelectorAll('a');
+  
+  elementosProvincia.forEach((elementProv)=> {elementProv.addEventListener('click',(e)=>{e.preventDefault(),console.log('hecho click')})})
+
+
+  /*escocherLasProvincias.addEventListener('click', (e)=>{console.log('hecho click'), aElement = document.createElement('a'),
 
     aElement.classList.add('dropdown-item'),escocherLasProvincias.appendChild(aElement)},
-     );
-    
-  });
+     );*/
+
+  })
  
 
 
