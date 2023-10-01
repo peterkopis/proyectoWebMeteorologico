@@ -10,30 +10,39 @@ let elementoProvincia
    obtenerJsonDeApi(url).then(json => {
     
      for(let provincia  of json.provincias){
-          //console.log(provincia.NOMBRE_PROVINCIA +'--------'),
+          
           elementoProvincia =document.createElement('a')
+          //elementoProvincia.removeEventListener('click',e=>{municipiosDeUnaProvincia(codProv)})
           elementoProvincia.setAttribute('href','#')
           elementoProvincia.classList.add('dropdown-item')
           elementoProvincia.innerText = provincia.NOMBRE_PROVINCIA
-          //anade para que siempre devuelve string
+          //anade un string vacio, para que siempre devuelve string
           let codProv = provincia.CODPROV +""
           elementoProvincia.setAttribute("codigo", provincia.CODPROV)
-          elementoProvincia.addEventListener('click',e=>{console.log('clicki'),municipiosDeUnaProvincia(codProv)})
-          menuDeProvincias.appendChild(elementoProvincia)
+          
+          elementoProvincia.addEventListener('click',e=>{
+            municipiosDeUnaProvincia(codProv)
 
+          })
+          menuDeProvincias.appendChild(elementoProvincia)
+        
+        }})
+         
+          
      }
      
-   })
-
- }
+  
 },{"./municipiosDeUnaProvinciaApi":2,"./obtenerJsonDeApi":3}],2:[function(require,module,exports){
 "use strict"
 
 let obtenerJsonDeApi = require('./obtenerJsonDeApi')
+let unMunicipioTemperaturaApi = require('./unMunicipioTemperaturaApi')
 
 module.exports = function municipiosDeUnaProvincia(urlcodProv){
-    let elementoMunicipio;
+    //let elementoMunicipio 
+    //let idMunicipio
     let menuDeMunicipios = document.getElementById('exampleFormControlSelect1')
+   // let idProvinciaDeElegidoMunicipio
 
     const urlPrefix = 'https://www.el-tiempo.net/api/json/v2/provincias/'
     const urlPostfix = '/municipios'
@@ -43,17 +52,39 @@ module.exports = function municipiosDeUnaProvincia(urlcodProv){
 
         //cuanto se elige una nueva provincia los municipios se cargan de nuevo 
         menuDeMunicipios.innerHTML = ''
+        /*while(menuDeMunicipios.hasChildNodes()){
+            menuDeMunicipios.removeChild(menuDeMunicipios.firstChild)
+        }*/
         for(let municipio  of json.municipios){
 
             //console.log(municipio)
-            elementoMunicipio =document.createElement('option')
+            let elementoMunicipio =document.createElement('option')
             elementoMunicipio.innerText = municipio.NOMBRE
+            //Que devuelve siempre string
+            let idMunicipio = municipio.CODIGOINE + ''
+            //El [ID] son los primeros cinco dígitos del dato CODIGOINE
+            idMunicipio = idMunicipio.substring(0,5)
+            elementoMunicipio.setAttribute("value", idMunicipio)
+           let  idProvinciaDeElegidoMunicipio = municipio.CODPROV 
+           idProvinciaDeElegidoMunicipio += ''
+            elementoMunicipio.setAttribute("codigoProv", idProvinciaDeElegidoMunicipio)
+           
+            
+            
             menuDeMunicipios.appendChild(elementoMunicipio)
+            //elementoMunicipio.addEventListener('click',()=>console.log('bum'))
+            //elementoMunicipio.addEventListener('click',e =>{e.preventDefault,console.log('buu'),unMunicipioTemperaturaApi(idProvinciaDeElegidoMunicipio,idMunicipio)})
+            
 
 
-        }})
+        }
+    })
+        /*let idProvinciaDeElegidoMunicipio = menuDeMunicipios.options[menuDeMunicipios.selectedIndex].getAttribute("codigoProv")
+         let idMunicipio = menuDeMunicipios.options[menuDeMunicipios.selectedIndex].getAttribute("value")*/
+       // menuDeMunicipios.addEventListener('change',e=>{/*unMunicipioTemperaturaApi(idProvinciaDeElegidoMunicipio,idMunicipio)*/console.log('hu')})
+   
 }
-},{"./obtenerJsonDeApi":3}],3:[function(require,module,exports){
+},{"./obtenerJsonDeApi":3,"./unMunicipioTemperaturaApi":4}],3:[function(require,module,exports){
 "use strict"
 
 
@@ -63,18 +94,32 @@ module.exports =function obtenerJsonDeApi(url) {
 },{}],4:[function(require,module,exports){
 "use strict"
 
+module.exports = function unMunicipioTemperaturaApi(idProvinciaDeElegidoMunicipio,idMunicipio){
 
-let mostrarLasProvincias= require('./api/ProvinciasApi')
+        const urlPrefix = 'https://www.el-tiempo.net/api/json/v2/provincias/'
+        const urlBetween = '/municipios/'
+        let urlDeMunicipioTemperatura =urlPrefix + idProvinciaDeElegidoMunicipio + urlBetween + idMunicipio
+        console.log (urlDeMunicipioTemperatura)
+}
+},{}],5:[function(require,module,exports){
+"use strict"
+
+
+let mostrarProvincias= require('./api/ProvinciasApi')
 const urlProvincias = 'https://www.el-tiempo.net/api/json/v2/provincias'
 let elementosProvincia
+
 
 
 
 //cargar todo el DOM
 document.addEventListener("DOMContentLoaded", function() {
 
+let menuDeMunicipios = document.getElementById('exampleFormControlSelect1')
 let menuDeProvincias =  document.getElementById('drop-menu')
-mostrarLasProvincias(urlProvincias, menuDeProvincias)
+
+mostrarProvincias(urlProvincias, menuDeProvincias)
+menuDeMunicipios.addEventListener('change',e=>{/*unMunicipioTemperaturaApi(idProvinciaDeElegidoMunicipio,idMunicipio)*/console.log('hu')})
  
 
   
@@ -89,4 +134,4 @@ mostrarLasProvincias(urlProvincias, menuDeProvincias)
 
 
    
-},{"./api/ProvinciasApi":1}]},{},[4]);
+},{"./api/ProvinciasApi":1}]},{},[5]);

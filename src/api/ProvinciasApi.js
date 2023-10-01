@@ -9,19 +9,25 @@ let elementoProvincia
    obtenerJsonDeApi(url).then(json => {
     
      for(let provincia  of json.provincias){
-          //console.log(provincia.NOMBRE_PROVINCIA +'--------'),
+          
           elementoProvincia =document.createElement('a')
+          //elementoProvincia.removeEventListener('click',e=>{municipiosDeUnaProvincia(codProv)})
           elementoProvincia.setAttribute('href','#')
           elementoProvincia.classList.add('dropdown-item')
           elementoProvincia.innerText = provincia.NOMBRE_PROVINCIA
-          //anade para que siempre devuelve string
+          //anade un string vacio, para que siempre devuelve string
           let codProv = provincia.CODPROV +""
           elementoProvincia.setAttribute("codigo", provincia.CODPROV)
-          elementoProvincia.addEventListener('click',e=>{console.log('clicki'),municipiosDeUnaProvincia(codProv)})
-          menuDeProvincias.appendChild(elementoProvincia)
+          
+          elementoProvincia.addEventListener('click',e=>{
+            municipiosDeUnaProvincia(codProv)
 
+          })
+          menuDeProvincias.appendChild(elementoProvincia)
+        
+        }})
+         
+          
      }
      
-   })
-
- }
+  
