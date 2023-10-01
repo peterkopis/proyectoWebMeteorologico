@@ -1,19 +1,12 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 "use strict"
 
-
+let obtenerJsonDeApi = require('./obtenerJsonDeApi')
 
 let elementoProvincia
 
-
-
-function obtenerJson(url) {
-   return fetch(url).then(response => response.json());
- }
- 
- 
  module.exports = function mostrarProvincias(url,menuDeProvincias) {
-   obtenerJson(url).then(json => {
+   obtenerJsonDeApi(url).then(json => {
     
      for(let provincia  of json.provincias){
           //console.log(provincia.NOMBRE_PROVINCIA +'--------'),
@@ -28,9 +21,16 @@ function obtenerJson(url) {
      }
      
    })
-  // return  Promise.resolve(resolve=>{console.log('promise')})
+
  }
-},{}],2:[function(require,module,exports){
+},{"./obtenerJsonDeApi":2}],2:[function(require,module,exports){
+"use strict"
+
+
+module.exports =function obtenerJsonDeApi(url) {
+    return fetch(url).then(response => response.json());
+  }
+},{}],3:[function(require,module,exports){
 "use strict"
 
 
@@ -43,20 +43,11 @@ let elementosProvincia
 //cargar todo el DOM
 document.addEventListener("DOMContentLoaded", function() {
 
-  let menuDeProvincias =  document.getElementById('drop-menu')
+let menuDeProvincias =  document.getElementById('drop-menu')
 mostrarLasProvincias(urlProvincias, menuDeProvincias)
  
 
-  elementosProvincia = document.querySelectorAll('.dropdown-item'),
-  //document.querySelectorAll(".dropdown-item"); //document.getElementsByTagName('a') document.querySelectorAll('a');
   
-  elementosProvincia.forEach((elementProv)=> {elementProv.addEventListener('click',(e)=>{e.preventDefault(),console.log('hecho click')})})
-
-
-  /*escocherLasProvincias.addEventListener('click', (e)=>{console.log('hecho click'), aElement = document.createElement('a'),
-
-    aElement.classList.add('dropdown-item'),escocherLasProvincias.appendChild(aElement)},
-     );*/
 
   })
  
@@ -68,4 +59,4 @@ mostrarLasProvincias(urlProvincias, menuDeProvincias)
 
 
    
-},{"./api/ProvinciasApi":1}]},{},[2]);
+},{"./api/ProvinciasApi":1}]},{},[3]);

@@ -1,18 +1,11 @@
 "use strict"
 
-
+let obtenerJsonDeApi = require('./obtenerJsonDeApi')
 
 let elementoProvincia
 
-
-
-function obtenerJson(url) {
-   return fetch(url).then(response => response.json());
- }
- 
- 
  module.exports = function mostrarProvincias(url,menuDeProvincias) {
-   obtenerJson(url).then(json => {
+   obtenerJsonDeApi(url).then(json => {
     
      for(let provincia  of json.provincias){
           //console.log(provincia.NOMBRE_PROVINCIA +'--------'),
@@ -27,5 +20,5 @@ function obtenerJson(url) {
      }
      
    })
-  // return  Promise.resolve(resolve=>{console.log('promise')})
+
  }
