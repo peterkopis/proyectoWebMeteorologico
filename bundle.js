@@ -2,6 +2,7 @@
 "use strict"
 
 let obtenerJsonDeApi = require('./obtenerJsonDeApi')
+let municipiosDeUnaProvincia = require('./municipiosDeUnaProvinciaApi')
 
 let elementoProvincia
 
@@ -14,8 +15,10 @@ let elementoProvincia
           elementoProvincia.setAttribute('href','#')
           elementoProvincia.classList.add('dropdown-item')
           elementoProvincia.innerText = provincia.NOMBRE_PROVINCIA
+          //anade para que siempre devuelve string
+          let codProv = provincia.CODPROV +""
           elementoProvincia.setAttribute("codigo", provincia.CODPROV)
-          elementoProvincia.addEventListener('click',e=>console.log('clicki'))
+          elementoProvincia.addEventListener('click',e=>{console.log('clicki'),municipiosDeUnaProvincia(codProv)})
           menuDeProvincias.appendChild(elementoProvincia)
 
      }
@@ -23,14 +26,26 @@ let elementoProvincia
    })
 
  }
-},{"./obtenerJsonDeApi":2}],2:[function(require,module,exports){
+},{"./municipiosDeUnaProvinciaApi":2,"./obtenerJsonDeApi":3}],2:[function(require,module,exports){
+"use strict"
+
+let obtenerJsonDeApi = require('./obtenerJsonDeApi')
+
+module.exports = function municipiosDeUnaProvincia(urlcodProv){
+
+    const urlPrefix = 'https://www.el-tiempo.net/api/json/v2/provincias/'
+    const urlPostfix = '/municipios'
+    let urlMunicipiosDeUnaProvincia = urlPrefix+urlcodProv+urlPostfix
+    console.log(urlMunicipiosDeUnaProvincia)
+}
+},{"./obtenerJsonDeApi":3}],3:[function(require,module,exports){
 "use strict"
 
 
 module.exports =function obtenerJsonDeApi(url) {
     return fetch(url).then(response => response.json());
   }
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 "use strict"
 
 
@@ -59,4 +74,4 @@ mostrarLasProvincias(urlProvincias, menuDeProvincias)
 
 
    
-},{"./api/ProvinciasApi":1}]},{},[3]);
+},{"./api/ProvinciasApi":1}]},{},[4]);
