@@ -1,8 +1,9 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 "use strict"
 
-let obtenerJsonDeApi = require('./obtenerJsonDeApi')
-let municipiosDeUnaProvincia = require('./municipiosDeUnaProvinciaApi')
+const obtenerJsonDeApi = require('./obtenerJsonDeApi')
+const municipiosDeUnaProvincia = require('./municipiosDeUnaProvinciaApi')
+const crearElementoAProvincia = require('../crearElementos/crearElementoAProvincia')
 
 let elementoProvincia
 
@@ -10,44 +11,37 @@ let elementoProvincia
    obtenerJsonDeApi(url).then(json => {
     
      for(let provincia  of json.provincias){
-          
-          elementoProvincia =document.createElement('a')
-          //elementoProvincia.removeEventListener('click',e=>{municipiosDeUnaProvincia(codProv)})
-          elementoProvincia.setAttribute('href','#')
-          elementoProvincia.classList.add('dropdown-item')
-          elementoProvincia.innerText = provincia.NOMBRE_PROVINCIA
+           
+          let nombreProv = provincia.NOMBRE_PROVINCIA
           //anade un string vacio, para que siempre devuelve string
           let codProv = provincia.CODPROV +""
-          elementoProvincia.setAttribute("codigo", provincia.CODPROV)
-          
+          elementoProvincia = crearElementoAProvincia(nombreProv,codProv)
           elementoProvincia.addEventListener('click',e=>{
-            municipiosDeUnaProvincia(codProv)
+          municipiosDeUnaProvincia(codProv)
 
           })
           menuDeProvincias.appendChild(elementoProvincia)
-        
-        }})
-         
-          
+        }})    
      }
      
   
-},{"./municipiosDeUnaProvinciaApi":2,"./obtenerJsonDeApi":3}],2:[function(require,module,exports){
+},{"../crearElementos/crearElementoAProvincia":5,"./municipiosDeUnaProvinciaApi":2,"./obtenerJsonDeApi":3}],2:[function(require,module,exports){
 "use strict"
 
-let obtenerJsonDeApi = require('./obtenerJsonDeApi')
-let unMunicipioTemperaturaApi = require('./unMunicipioTemperaturaApi')
+const obtenerJsonDeApi = require('./obtenerJsonDeApi')
+const unMunicipioTemperaturaApi = require('./unMunicipioTemperaturaApi')
+const crearElementoMunicipio = require('../crearElementos/crearElementoMunicipio') 
 
 module.exports = function municipiosDeUnaProvincia(urlcodProv){
      
     
-    let menuDeMunicipios = document.getElementById('exampleFormControlSelect1')
+    const menuDeMunicipios = document.getElementById('exampleFormControlSelect1')
     let elementoMunicipio
 
     const urlPrefix = 'https://www.el-tiempo.net/api/json/v2/provincias/'
     const urlPostfix = '/municipios'
     let urlMunicipiosDeUnaProvincia = urlPrefix+urlcodProv+urlPostfix
-    //console.log(urlMunicipiosDeUnaProvincia)
+    
     obtenerJsonDeApi(urlMunicipiosDeUnaProvincia).then(json => {
 
         //cuanto se elige una nueva provincia los municipios se cargan de nuevo 
@@ -60,34 +54,21 @@ module.exports = function municipiosDeUnaProvincia(urlcodProv){
         
         for(let municipio  of json.municipios){
 
-            //console.log(municipio)
-            elementoMunicipio =document.createElement('option')
-            elementoMunicipio.innerText = municipio.NOMBRE
             //Que devuelve siempre string
+            let nombreMunic = municipio.NOMBRE
             let idMunicipio = municipio.CODIGOINE + ''
             //El [ID] son los primeros cinco dígitos del dato CODIGOINE
             idMunicipio = idMunicipio.substring(0,5)
-            elementoMunicipio.setAttribute("value", idMunicipio)
-           let  idProvinciaDeElegidoMunicipio = municipio.CODPROV 
+            let  idProvinciaDeElegidoMunicipio = municipio.CODPROV 
            idProvinciaDeElegidoMunicipio += ''
             elementoMunicipio.setAttribute("codigoProv", idProvinciaDeElegidoMunicipio)
-           
-            
-            
+            elementoMunicipio = crearElementoMunicipio(nombreMunic,idMunicipio,idProvinciaDeElegidoMunicipio)
             menuDeMunicipios.appendChild(elementoMunicipio)
-            //elementoMunicipio.addEventListener('click',()=>console.log('bum'))
-            //elementoMunicipio.addEventListener('click',e =>{e.preventDefault,console.log('buu'),unMunicipioTemperaturaApi(idProvinciaDeElegidoMunicipio,idMunicipio)})
-            
-
-
         }
     })
-        /*let idProvinciaDeElegidoMunicipio = menuDeMunicipios.options[menuDeMunicipios.selectedIndex].getAttribute("codigoProv")
-         let idMunicipio = menuDeMunicipios.options[menuDeMunicipios.selectedIndex].getAttribute("value")*/
-       // menuDeMunicipios.addEventListener('change',e=>{/*unMunicipioTemperaturaApi(idProvinciaDeElegidoMunicipio,idMunicipio)*/console.log('hu')})
-   
+       
 }
-},{"./obtenerJsonDeApi":3,"./unMunicipioTemperaturaApi":4}],3:[function(require,module,exports){
+},{"../crearElementos/crearElementoMunicipio":7,"./obtenerJsonDeApi":3,"./unMunicipioTemperaturaApi":4}],3:[function(require,module,exports){
 "use strict"
 
 
@@ -97,8 +78,9 @@ module.exports =function obtenerJsonDeApi(url) {
 },{}],4:[function(require,module,exports){
 "use strict"
 
-let obtenerJsonDeApi = require('./obtenerJsonDeApi')
-let crearElementosUl = require('../crearElementos/crearElementoUl')
+const obtenerJsonDeApi = require('./obtenerJsonDeApi')
+const crearElementosUl = require('../crearElementos/crearElementoUl')
+const crearElementoDivCard = require('../crearElementos/crearElementoDivCard')
 
 
 module.exports = function unMunicipioTemperaturaApi(idProvinciaDeElegidoMunicipio,idMunicipio){
@@ -117,21 +99,9 @@ module.exports = function unMunicipioTemperaturaApi(idProvinciaDeElegidoMunicipi
         obtenerJsonDeApi(urlDeMunicipioTemperatura)
         .then(
                 json => {
-
-                        console.log(json.metadescripcion)
-                        console.log(json.temperatura_actual)
-                        
-                        let elementoNombreDeMunicipio = document.createElement('h5')
-                        elementoNombreDeMunicipio.classList.add('card-title')
-                        elementoNombreDeMunicipio.innerText = json.metadescripcion
-                        let divCardBody = document.createElement('div')
-                        divCardBody.classList.add('card-body')
-                        divCardBody.appendChild(elementoNombreDeMunicipio)
-
-                        let cardText = document.createElement('p')
-                        cardText.classList.add('card-body')
-                        cardText.innerText = 'La fecha: ' + json.fecha
-                        divCardBody.appendChild(cardText)
+                        let metadescripcion = json.metadescripcion
+                        let fecha = json.fecha
+                        let divCardBody = crearElementoDivCard(metadescripcion,fecha)
                         
                         let temperatura_actual = json.temperatura_actual
                         let estadoDelCielo = json.stateSky.description
@@ -141,19 +111,55 @@ module.exports = function unMunicipioTemperaturaApi(idProvinciaDeElegidoMunicipi
 
                         cartaTiempoDelMunicipio.appendChild(divCardBody)
                         cartaTiempoDelMunicipio.appendChild(crearElementosUl(temperatura_actual,estadoDelCielo,tempMin,tempMax))
-
-
-
-
-
-
-
                 }
         )
 
         }        
 }
-},{"../crearElementos/crearElementoUl":5,"./obtenerJsonDeApi":3}],5:[function(require,module,exports){
+},{"../crearElementos/crearElementoDivCard":6,"../crearElementos/crearElementoUl":8,"./obtenerJsonDeApi":3}],5:[function(require,module,exports){
+"use strict"
+
+module.exports = function crearElementoAProvincia(nombreProvincia,codprov){
+
+    let elementoProvincia =document.createElement('a')
+    elementoProvincia.setAttribute('href','#')
+    elementoProvincia.classList.add('dropdown-item')
+    elementoProvincia.innerText = nombreProvincia
+    elementoProvincia.setAttribute("codigo", codprov)
+
+    return elementoProvincia
+}
+},{}],6:[function(require,module,exports){
+"use strict"
+
+module.exports = function crearElementoDivCard(metadescription,fecha){
+
+    let elementoNombreDeMunicipio = document.createElement('h5')
+    elementoNombreDeMunicipio.classList.add('card-title')
+    elementoNombreDeMunicipio.innerText = metadescription
+    let divCardBody = document.createElement('div')
+    divCardBody.classList.add('card-body')
+    divCardBody.appendChild(elementoNombreDeMunicipio)
+    let cardText = document.createElement('p')
+    cardText.classList.add('card-body')
+    cardText.innerText = 'La fecha: ' + fecha
+    divCardBody.appendChild(cardText)
+    return divCardBody
+
+}
+},{}],7:[function(require,module,exports){
+"use strict"
+
+module.exports = function crearElementoMunicipio(municipioNombre,idMunicipio,idProvinciaDeElegidoMunicipio){
+
+    let elementoMunicipio =document.createElement('option')
+        elementoMunicipio.innerText = municipioNombre
+        elementoMunicipio.setAttribute("value", idMunicipio)
+        elementoMunicipio.setAttribute("codigoProv", idProvinciaDeElegidoMunicipio)
+
+        return elementoMunicipio
+}
+},{}],8:[function(require,module,exports){
 "use strict"
 
 module.exports = function crearElementosUl(temperaturaActual,estadoDelCielo,tempMin,tempMax){
@@ -185,10 +191,9 @@ module.exports = function crearElementosUl(temperaturaActual,estadoDelCielo,temp
              elementoUl.appendChild(elementLi)
 
         }
-        return elementoUl
-    
+        return elementoUl 
 }
-},{}],6:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 "use strict"
 
 
@@ -204,8 +209,8 @@ let contarLosUsos = 0
 //cargar todo el DOM
 document.addEventListener("DOMContentLoaded", function() {
 
-let menuDeMunicipios = document.getElementById('exampleFormControlSelect1')
-let menuDeProvincias =  document.getElementById('drop-menu')
+const menuDeMunicipios = document.getElementById('exampleFormControlSelect1')
+const menuDeProvincias =  document.getElementById('drop-menu')
 
 mostrarProvincias(urlProvincias, menuDeProvincias)
 
@@ -235,4 +240,4 @@ unMunicipioTemperaturaApi(idProvinciaDeElegidoMunicipio,idMunicipio)
 
 
    
-},{"./api/ProvinciasApi":1,"./api/unMunicipioTemperaturaApi":4}]},{},[6]);
+},{"./api/ProvinciasApi":1,"./api/unMunicipioTemperaturaApi":4}]},{},[9]);

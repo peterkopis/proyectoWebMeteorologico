@@ -13,8 +13,8 @@ let contarLosUsos = 0
 //cargar todo el DOM
 document.addEventListener("DOMContentLoaded", function() {
 
-let menuDeMunicipios = document.getElementById('exampleFormControlSelect1')
-let menuDeProvincias =  document.getElementById('drop-menu')
+const menuDeMunicipios = document.getElementById('exampleFormControlSelect1')
+const menuDeProvincias =  document.getElementById('drop-menu')
 
 mostrarProvincias(urlProvincias, menuDeProvincias)
 

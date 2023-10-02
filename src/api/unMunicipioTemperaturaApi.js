@@ -1,7 +1,8 @@
 "use strict"
 
-let obtenerJsonDeApi = require('./obtenerJsonDeApi')
-let crearElementosUl = require('../crearElementos/crearElementoUl')
+const obtenerJsonDeApi = require('./obtenerJsonDeApi')
+const crearElementosUl = require('../crearElementos/crearElementoUl')
+const crearElementoDivCard = require('../crearElementos/crearElementoDivCard')
 
 
 module.exports = function unMunicipioTemperaturaApi(idProvinciaDeElegidoMunicipio,idMunicipio){
@@ -20,21 +21,9 @@ module.exports = function unMunicipioTemperaturaApi(idProvinciaDeElegidoMunicipi
         obtenerJsonDeApi(urlDeMunicipioTemperatura)
         .then(
                 json => {
-
-                        console.log(json.metadescripcion)
-                        console.log(json.temperatura_actual)
-                        
-                        let elementoNombreDeMunicipio = document.createElement('h5')
-                        elementoNombreDeMunicipio.classList.add('card-title')
-                        elementoNombreDeMunicipio.innerText = json.metadescripcion
-                        let divCardBody = document.createElement('div')
-                        divCardBody.classList.add('card-body')
-                        divCardBody.appendChild(elementoNombreDeMunicipio)
-
-                        let cardText = document.createElement('p')
-                        cardText.classList.add('card-body')
-                        cardText.innerText = 'La fecha: ' + json.fecha
-                        divCardBody.appendChild(cardText)
+                        let metadescripcion = json.metadescripcion
+                        let fecha = json.fecha
+                        let divCardBody = crearElementoDivCard(metadescripcion,fecha)
                         
                         let temperatura_actual = json.temperatura_actual
                         let estadoDelCielo = json.stateSky.description
@@ -44,13 +33,6 @@ module.exports = function unMunicipioTemperaturaApi(idProvinciaDeElegidoMunicipi
 
                         cartaTiempoDelMunicipio.appendChild(divCardBody)
                         cartaTiempoDelMunicipio.appendChild(crearElementosUl(temperatura_actual,estadoDelCielo,tempMin,tempMax))
-
-
-
-
-
-
-
                 }
         )
 

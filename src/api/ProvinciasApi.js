@@ -1,7 +1,8 @@
 "use strict"
 
-let obtenerJsonDeApi = require('./obtenerJsonDeApi')
-let municipiosDeUnaProvincia = require('./municipiosDeUnaProvinciaApi')
+const obtenerJsonDeApi = require('./obtenerJsonDeApi')
+const municipiosDeUnaProvincia = require('./municipiosDeUnaProvinciaApi')
+const crearElementoAProvincia = require('../crearElementos/crearElementoAProvincia')
 
 let elementoProvincia
 
@@ -9,25 +10,17 @@ let elementoProvincia
    obtenerJsonDeApi(url).then(json => {
     
      for(let provincia  of json.provincias){
-          
-          elementoProvincia =document.createElement('a')
-          //elementoProvincia.removeEventListener('click',e=>{municipiosDeUnaProvincia(codProv)})
-          elementoProvincia.setAttribute('href','#')
-          elementoProvincia.classList.add('dropdown-item')
-          elementoProvincia.innerText = provincia.NOMBRE_PROVINCIA
+           
+          let nombreProv = provincia.NOMBRE_PROVINCIA
           //anade un string vacio, para que siempre devuelve string
           let codProv = provincia.CODPROV +""
-          elementoProvincia.setAttribute("codigo", provincia.CODPROV)
-          
+          elementoProvincia = crearElementoAProvincia(nombreProv,codProv)
           elementoProvincia.addEventListener('click',e=>{
-            municipiosDeUnaProvincia(codProv)
+          municipiosDeUnaProvincia(codProv)
 
           })
           menuDeProvincias.appendChild(elementoProvincia)
-        
-        }})
-         
-          
+        }})    
      }
      
   

@@ -29,6 +29,5 @@ module.exports = function crearElementosUl(temperaturaActual,estadoDelCielo,temp
              elementoUl.appendChild(elementLi)
 
         }
-        return elementoUl
-    
+        return elementoUl 
 }
