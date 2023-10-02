@@ -132,14 +132,7 @@ module.exports = function unMunicipioTemperaturaApi(idProvinciaDeElegidoMunicipi
                         cardText.classList.add('card-body')
                         cardText.innerText = 'La fecha: ' + json.fecha
                         divCardBody.appendChild(cardText)
-                        /*
-                        //ul
-                        let elementoUl = document.createElement('ul')
-                        elementoUl.classList.add('list-group')
-                        elementoUl.classList.add('list-group-flush')
-
-                        let elementLi = document.createElement('li')
-                        elementLi.classList.add('list-group-item')*/
+                        
                         let temperatura_actual = json.temperatura_actual
                         let estadoDelCielo = json.stateSky.description
                         let tempMin = json.temperaturas.min
@@ -176,7 +169,7 @@ module.exports = function crearElementosUl(temperaturaActual,estadoDelCielo,temp
             let elementLi = document.createElement('li')
             elementLi.classList.add('list-group-item')
             
-            //elementLi.innerHTML = 'bold'
+            
             if(element < 1 ){
                 
                 elementLi.innerText = "temperatura_actual: " + temperaturaActual
@@ -203,7 +196,7 @@ const mostrarProvincias= require('./api/ProvinciasApi')
 const unMunicipioTemperaturaApi = require('./api/unMunicipioTemperaturaApi')
 const urlProvincias = 'https://www.el-tiempo.net/api/json/v2/provincias'
 let elementosProvincia
-
+let contarLosUsos = 0
 
 
 
@@ -218,6 +211,12 @@ mostrarProvincias(urlProvincias, menuDeProvincias)
 
 
 menuDeMunicipios.addEventListener('change',e=>{
+  contarLosUsos++
+  if(contarLosUsos > 5){
+    alert('Para más suscribete al Premium')
+    document.write('Suscribete al Premium :)')
+    throw new Error("El limite de usos gratuitos!");
+  }
 let idProvinciaDeElegidoMunicipio = menuDeMunicipios.options[menuDeMunicipios.selectedIndex].getAttribute("codigoProv")
 let idMunicipio = menuDeMunicipios.options[menuDeMunicipios.selectedIndex].getAttribute("value")
 unMunicipioTemperaturaApi(idProvinciaDeElegidoMunicipio,idMunicipio)
