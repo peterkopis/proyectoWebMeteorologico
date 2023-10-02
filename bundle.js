@@ -54,8 +54,8 @@ module.exports = function municipiosDeUnaProvincia(urlcodProv){
         menuDeMunicipios.innerHTML = ''
         //el primer valor en los optiones, solo para cambiar valor
         elementoMunicipio =document.createElement('option')
-            elementoMunicipio.innerText = 'MUNICIPIOS'
-            menuDeMunicipios.appendChild(elementoMunicipio)
+        elementoMunicipio.innerText = 'MUNICIPIOS'
+        menuDeMunicipios.appendChild(elementoMunicipio)
 
         
         for(let municipio  of json.municipios){
@@ -97,16 +97,105 @@ module.exports =function obtenerJsonDeApi(url) {
 },{}],4:[function(require,module,exports){
 "use strict"
 
+let obtenerJsonDeApi = require('./obtenerJsonDeApi')
+let crearElementosUl = require('../crearElementos/crearElementoUl')
+
+
 module.exports = function unMunicipioTemperaturaApi(idProvinciaDeElegidoMunicipio,idMunicipio){
 
+        //primero limpia la tarjeta de previoso resultado
+        let cartaTiempoDelMunicipio = document.getElementById('cartaTiempoDelMunicipio')
+        cartaTiempoDelMunicipio.innerHTML = ''
+
         if((idProvinciaDeElegidoMunicipio != null) && (idMunicipio != null) ){
+
+
         const urlPrefix = 'https://www.el-tiempo.net/api/json/v2/provincias/'
         const urlBetween = '/municipios/'
         let urlDeMunicipioTemperatura =urlPrefix + idProvinciaDeElegidoMunicipio + urlBetween + idMunicipio
         console.log (urlDeMunicipioTemperatura)
+        obtenerJsonDeApi(urlDeMunicipioTemperatura)
+        .then(
+                json => {
+
+                        console.log(json.metadescripcion)
+                        console.log(json.temperatura_actual)
+                        
+                        let elementoNombreDeMunicipio = document.createElement('h5')
+                        elementoNombreDeMunicipio.classList.add('card-title')
+                        elementoNombreDeMunicipio.innerText = json.metadescripcion
+                        let divCardBody = document.createElement('div')
+                        divCardBody.classList.add('card-body')
+                        divCardBody.appendChild(elementoNombreDeMunicipio)
+
+                        let cardText = document.createElement('p')
+                        cardText.classList.add('card-body')
+                        cardText.innerText = 'La fecha: ' + json.fecha
+                        divCardBody.appendChild(cardText)
+                        /*
+                        //ul
+                        let elementoUl = document.createElement('ul')
+                        elementoUl.classList.add('list-group')
+                        elementoUl.classList.add('list-group-flush')
+
+                        let elementLi = document.createElement('li')
+                        elementLi.classList.add('list-group-item')*/
+                        let temperatura_actual = json.temperatura_actual
+                        let estadoDelCielo = json.stateSky.description
+                        let tempMin = json.temperaturas.min
+                        let tempMax = json.temperaturas.max
+
+
+                        cartaTiempoDelMunicipio.appendChild(divCardBody)
+                        cartaTiempoDelMunicipio.appendChild(crearElementosUl(temperatura_actual,estadoDelCielo,tempMin,tempMax))
+
+
+
+
+
+
+
+                }
+        )
+
         }        
 }
-},{}],5:[function(require,module,exports){
+},{"../crearElementos/crearElementoUl":5,"./obtenerJsonDeApi":3}],5:[function(require,module,exports){
+"use strict"
+
+module.exports = function crearElementosUl(temperaturaActual,estadoDelCielo,tempMin,tempMax){
+
+    //ul
+    let elementoUl = document.createElement('ul')
+        elementoUl.classList.add('list-group')
+        elementoUl.classList.add('list-group-flush')
+
+        //li
+        for(let element = 0; element < 3; element++){
+        
+            let elementLi = document.createElement('li')
+            elementLi.classList.add('list-group-item')
+            
+            //elementLi.innerHTML = 'bold'
+            if(element < 1 ){
+                
+                elementLi.innerText = "temperatura_actual: " + temperaturaActual
+            }
+            else if (element == 1 ) {
+                elementLi.innerText = "estado del cielo: " + estadoDelCielo
+                
+            } else{
+                elementLi.innerText = "temperaturas hoy: min: "+ tempMin + " max: " + tempMax
+
+            }
+        
+             elementoUl.appendChild(elementLi)
+
+        }
+        return elementoUl
+    
+}
+},{}],6:[function(require,module,exports){
 "use strict"
 
 
@@ -114,6 +203,7 @@ const mostrarProvincias= require('./api/ProvinciasApi')
 const unMunicipioTemperaturaApi = require('./api/unMunicipioTemperaturaApi')
 const urlProvincias = 'https://www.el-tiempo.net/api/json/v2/provincias'
 let elementosProvincia
+
 
 
 
@@ -146,4 +236,4 @@ unMunicipioTemperaturaApi(idProvinciaDeElegidoMunicipio,idMunicipio)
 
 
    
-},{"./api/ProvinciasApi":1,"./api/unMunicipioTemperaturaApi":4}]},{},[5]);
+},{"./api/ProvinciasApi":1,"./api/unMunicipioTemperaturaApi":4}]},{},[6]);

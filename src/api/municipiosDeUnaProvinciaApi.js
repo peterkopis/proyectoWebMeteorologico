@@ -19,8 +19,8 @@ module.exports = function municipiosDeUnaProvincia(urlcodProv){
         menuDeMunicipios.innerHTML = ''
         //el primer valor en los optiones, solo para cambiar valor
         elementoMunicipio =document.createElement('option')
-            elementoMunicipio.innerText = 'MUNICIPIOS'
-            menuDeMunicipios.appendChild(elementoMunicipio)
+        elementoMunicipio.innerText = 'MUNICIPIOS'
+        menuDeMunicipios.appendChild(elementoMunicipio)
 
         
         for(let municipio  of json.municipios){

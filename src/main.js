@@ -9,6 +9,7 @@ let elementosProvincia
 
 
 
+
 //cargar todo el DOM
 document.addEventListener("DOMContentLoaded", function() {
 
