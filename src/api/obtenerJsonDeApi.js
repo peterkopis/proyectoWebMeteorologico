@@ -2,5 +2,6 @@
 
 
 module.exports =function obtenerJsonDeApi(url) {
-    return fetch(url).then(response => response.json());
+    return fetch(url).then(response => response.json())
+    .catch(error => alert(error))
   }

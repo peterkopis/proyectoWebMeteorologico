@@ -13,7 +13,7 @@ let elementoProvincia
      for(let provincia  of json.provincias){
            
           let nombreProv = provincia.NOMBRE_PROVINCIA
-          //anade un string vacio, para que siempre devuelve string
+          //anade un string vacio, para que siempre devuelve string, en caso que la api va en futuro cambiar el string por el numero
           let codProv = provincia.CODPROV +""
           elementoProvincia = crearElementoAProvincia(nombreProv,codProv)
           elementoProvincia.addEventListener('click',e=>{
@@ -54,12 +54,13 @@ module.exports = function municipiosDeUnaProvincia(urlcodProv){
         
         for(let municipio  of json.municipios){
 
-            //Que devuelve siempre string
+            //Que devuelve siempre string,  en caso que en la api en futuro se va cambiar el string por el numero
             let nombreMunic = municipio.NOMBRE
             let idMunicipio = municipio.CODIGOINE + ''
             //El [ID] son los primeros cinco dígitos del dato CODIGOINE
             idMunicipio = idMunicipio.substring(0,5)
             let  idProvinciaDeElegidoMunicipio = municipio.CODPROV 
+            //Que devuelve siempre string,  en caso que en la api en futuro se va cambiar el string por el numero
            idProvinciaDeElegidoMunicipio += ''
             elementoMunicipio.setAttribute("codigoProv", idProvinciaDeElegidoMunicipio)
             elementoMunicipio = crearElementoMunicipio(nombreMunic,idMunicipio,idProvinciaDeElegidoMunicipio)
@@ -73,7 +74,8 @@ module.exports = function municipiosDeUnaProvincia(urlcodProv){
 
 
 module.exports =function obtenerJsonDeApi(url) {
-    return fetch(url).then(response => response.json());
+    return fetch(url).then(response => response.json())
+    .catch(error => alert(error))
   }
 },{}],4:[function(require,module,exports){
 "use strict"
@@ -197,13 +199,11 @@ module.exports = function crearElementosUl(temperaturaActual,estadoDelCielo,temp
 "use strict"
 
 
-const mostrarProvincias= require('./api/ProvinciasApi')
+const rellenarPorProvincias= require('./api/ProvinciasApi')
 const unMunicipioTemperaturaApi = require('./api/unMunicipioTemperaturaApi')
 const urlProvincias = 'https://www.el-tiempo.net/api/json/v2/provincias'
 let elementosProvincia
 let contarLosUsos = 0
-
-
 
 
 //cargar todo el DOM
@@ -212,9 +212,10 @@ document.addEventListener("DOMContentLoaded", function() {
 const menuDeMunicipios = document.getElementById('exampleFormControlSelect1')
 const menuDeProvincias =  document.getElementById('drop-menu')
 
-mostrarProvincias(urlProvincias, menuDeProvincias)
+//rellena el elemento por elementos a con nombre de las provincias
+rellenarPorProvincias(urlProvincias, menuDeProvincias)
 
-
+//alanza cuando se cambie valor del municipio
 menuDeMunicipios.addEventListener('change',e=>{
   contarLosUsos++
   if(contarLosUsos > 5){
@@ -222,14 +223,13 @@ menuDeMunicipios.addEventListener('change',e=>{
     document.write('Suscribete al Premium :)')
     throw new Error("El limite de usos gratuitos!");
   }
+  //id de provincia , a dondé pertenece el municipio elegido
 let idProvinciaDeElegidoMunicipio = menuDeMunicipios.options[menuDeMunicipios.selectedIndex].getAttribute("codigoProv")
+//id de elegido municipio
 let idMunicipio = menuDeMunicipios.options[menuDeMunicipios.selectedIndex].getAttribute("value")
+//muestra las temperaturas del municipio elegido
 unMunicipioTemperaturaApi(idProvinciaDeElegidoMunicipio,idMunicipio)
 })
- 
-
-  
-
   })
  
 

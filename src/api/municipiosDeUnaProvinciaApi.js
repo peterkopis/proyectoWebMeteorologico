@@ -26,12 +26,13 @@ module.exports = function municipiosDeUnaProvincia(urlcodProv){
         
         for(let municipio  of json.municipios){
 
-            //Que devuelve siempre string
+            //Que devuelve siempre string,  en caso que en la api en futuro se va cambiar el string por el numero
             let nombreMunic = municipio.NOMBRE
             let idMunicipio = municipio.CODIGOINE + ''
             //El [ID] son los primeros cinco dígitos del dato CODIGOINE
             idMunicipio = idMunicipio.substring(0,5)
             let  idProvinciaDeElegidoMunicipio = municipio.CODPROV 
+            //Que devuelve siempre string,  en caso que en la api en futuro se va cambiar el string por el numero
            idProvinciaDeElegidoMunicipio += ''
             elementoMunicipio.setAttribute("codigoProv", idProvinciaDeElegidoMunicipio)
             elementoMunicipio = crearElementoMunicipio(nombreMunic,idMunicipio,idProvinciaDeElegidoMunicipio)
