@@ -39,10 +39,10 @@ let obtenerJsonDeApi = require('./obtenerJsonDeApi')
 let unMunicipioTemperaturaApi = require('./unMunicipioTemperaturaApi')
 
 module.exports = function municipiosDeUnaProvincia(urlcodProv){
-    //let elementoMunicipio 
-    //let idMunicipio
+     
+    
     let menuDeMunicipios = document.getElementById('exampleFormControlSelect1')
-   // let idProvinciaDeElegidoMunicipio
+    let elementoMunicipio
 
     const urlPrefix = 'https://www.el-tiempo.net/api/json/v2/provincias/'
     const urlPostfix = '/municipios'
@@ -52,13 +52,16 @@ module.exports = function municipiosDeUnaProvincia(urlcodProv){
 
         //cuanto se elige una nueva provincia los municipios se cargan de nuevo 
         menuDeMunicipios.innerHTML = ''
-        /*while(menuDeMunicipios.hasChildNodes()){
-            menuDeMunicipios.removeChild(menuDeMunicipios.firstChild)
-        }*/
+        //el primer valor en los optiones, solo para cambiar valor
+        elementoMunicipio =document.createElement('option')
+            elementoMunicipio.innerText = 'MUNICIPIOS'
+            menuDeMunicipios.appendChild(elementoMunicipio)
+
+        
         for(let municipio  of json.municipios){
 
             //console.log(municipio)
-            let elementoMunicipio =document.createElement('option')
+            elementoMunicipio =document.createElement('option')
             elementoMunicipio.innerText = municipio.NOMBRE
             //Que devuelve siempre string
             let idMunicipio = municipio.CODIGOINE + ''
@@ -96,10 +99,12 @@ module.exports =function obtenerJsonDeApi(url) {
 
 module.exports = function unMunicipioTemperaturaApi(idProvinciaDeElegidoMunicipio,idMunicipio){
 
+        if((idProvinciaDeElegidoMunicipio != null) && (idMunicipio != null) ){
         const urlPrefix = 'https://www.el-tiempo.net/api/json/v2/provincias/'
         const urlBetween = '/municipios/'
         let urlDeMunicipioTemperatura =urlPrefix + idProvinciaDeElegidoMunicipio + urlBetween + idMunicipio
         console.log (urlDeMunicipioTemperatura)
+        }        
 }
 },{}],5:[function(require,module,exports){
 "use strict"
