@@ -105,7 +105,8 @@ module.exports = function unMunicipioTemperaturaApi(idProvinciaDeElegidoMunicipi
 "use strict"
 
 
-let mostrarProvincias= require('./api/ProvinciasApi')
+const mostrarProvincias= require('./api/ProvinciasApi')
+const unMunicipioTemperaturaApi = require('./api/unMunicipioTemperaturaApi')
 const urlProvincias = 'https://www.el-tiempo.net/api/json/v2/provincias'
 let elementosProvincia
 
@@ -119,7 +120,13 @@ let menuDeMunicipios = document.getElementById('exampleFormControlSelect1')
 let menuDeProvincias =  document.getElementById('drop-menu')
 
 mostrarProvincias(urlProvincias, menuDeProvincias)
-menuDeMunicipios.addEventListener('change',e=>{/*unMunicipioTemperaturaApi(idProvinciaDeElegidoMunicipio,idMunicipio)*/console.log('hu')})
+
+
+menuDeMunicipios.addEventListener('change',e=>{
+let idProvinciaDeElegidoMunicipio = menuDeMunicipios.options[menuDeMunicipios.selectedIndex].getAttribute("codigoProv")
+let idMunicipio = menuDeMunicipios.options[menuDeMunicipios.selectedIndex].getAttribute("value")
+unMunicipioTemperaturaApi(idProvinciaDeElegidoMunicipio,idMunicipio)
+})
  
 
   
@@ -134,4 +141,4 @@ menuDeMunicipios.addEventListener('change',e=>{/*unMunicipioTemperaturaApi(idPro
 
 
    
-},{"./api/ProvinciasApi":1}]},{},[5]);
+},{"./api/ProvinciasApi":1,"./api/unMunicipioTemperaturaApi":4}]},{},[5]);
